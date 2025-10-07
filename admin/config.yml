@@ -1,10 +1,12 @@
 backend:
   name: git-gateway
   branch: main
+  identity_url: https://stupendous-douhua-66e01c.netlify.app/.netlify/identity
 
-media_folder: "images/uploads"
-public_folder: "/images/uploads"
+media_folder: "images/uploads"       # مسیر ذخیره تصاویر در repo
+public_folder: "/images/uploads"     # مسیر تصاویر در سایت
 
+# Collections (دیتابیس CMS)
 collections:
   - name: "projects"
     label: "نمونه‌کارها"
