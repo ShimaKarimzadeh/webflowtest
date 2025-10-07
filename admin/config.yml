@@ -1,19 +1,38 @@
 backend:
   name: git-gateway
-  branch: main
-  identity_url: https://stupendous-douhua-66e01c.netlify.app/.netlify/identity
+  branch: main # مطمئن شوید این همان نام شاخه اصلی شما در گیت‌هاب است (main یا master)
 
-media_folder: "images/uploads"       # مسیر ذخیره تصاویر در repo
-public_folder: "/images/uploads"     # مسیر تصاویر در سایت
+# جریان کاری برای اینکه مشتری قبل از انتشار بتواند پیش‌نویس (Draft) را تایید کند
+publish_mode: editorial_workflow
 
-# Collections (دیتابیس CMS)
+# تنظیمات محل ذخیره تصاویر (مسیرها را بر اساس ساختار وب‌فلو خود چک کنید)
+media_folder: "images/uploads"     # مسیر ذخیره فایل‌ها در ریپازیتوری (Git)
+public_folder: "/images/uploads"   # مسیری که فایل‌ها از طریق آن در سایت قابل دسترسی هستند
+
+# بخش Collections: تعریف انواع محتوا برای ادمین پنل
+
 collections:
+  # 1. نمونه‌کارها (Projects) - برای محتوای جدید
   - name: "projects"
     label: "نمونه‌کارها"
-    folder: "content/projects"
-    create: true
-    slug: "{{slug}}"
+    folder: "content/projects" # هر نمونه‌کار به صورت یک فایل جدید در این پوشه ذخیره می‌شود
+    create: true # به مشتری اجازه ساخت محتوای جدید را می‌دهد
+    slug: "{{slug}}" # نام فایل بر اساس عنوان (Title) ساخته می‌شود
     fields:
-      - {label: "عنوان", name: "title", widget: "string"}
-      - {label: "توضیحات", name: "description", widget: "text"}
-      - {label: "تصویر", name: "thumbnail", widget: "image"}
+      - {label: "عنوان نمونه‌کار", name: "title", widget: "string", required: true}
+      - {label: "تاریخ ایجاد", name: "date", widget: "datetime", required: true}
+      - {label: "توضیحات کوتاه", name: "description", widget: "string", required: true}
+      - {label: "تصویر اصلی (Thumbnail)", name: "image", widget: "image", required: true}
+      - {label: "محتوای کامل (بدنه)", name: "body", widget: "markdown"}
+      - {label: "دسته بندی", name: "category", widget: "string", required: false}
+
+  # 2. تنظیمات عمومی (مانند متن فوتر یا شماره تماس) - برای محتوای ثابت
+  - name: "settings"
+    label: "تنظیمات عمومی سایت"
+    files:
+      - file: "_data/site.yml" # محتوای تنظیمات در این فایل YAML ذخیره می‌شود
+        label: "اطلاعات تماس و فوتر"
+        fields:
+          - {label: "عنوان سایت", name: "site_title", widget: "string"}
+          - {label: "شماره تماس", name: "phone", widget: "string"}
+          - {label: "متن کپی‌رایت فوتر", name: "footer_text", widget: "string"}
